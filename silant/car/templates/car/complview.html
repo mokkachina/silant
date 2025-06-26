@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+
+        <p>Информация о комплектации и технических характеристиках Вашей техники</p>
+    </div>
+    <div class="nav-links">
+        <a href="{% url 'client_car' %}" class="{% if active_tab == 'cars' %}active-link{% endif %}">Машины</a>
+        <a href="{% url 'client_mainten' %}" class="{% if active_tab == 'maintenance' %}active-link{% endif %}">ТО</a>
+        <a href="{% url 'client_compl' %}" class="{% if active_tab == 'complaints' %}active-link{% endif %}">Рекламации</a>
+        <a href="{% url 'client_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить ТО</a>
+    </div>
+
+<div>
+    {% if user.is_authenticated %}
+        {% if cars %}
+
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?order=car.carnumber">Зав. № машины</a></th>
+                <th><a href="?order=car.carmodel">Модель техники </a></th>
+                <th><a href="?order=databroke">Дата отказа</a></th>
+                <th><a href="?order=workhour">Наработка, м/час</a></th>
+                <th><a href="?order=failnode">Узел отказа</a></th>
+                <th><a href="?order=description">Описание отказа</a></th>
+                <th><a href="?order=recoverymethod">Способ восстановления</a></th>
+                <th><a href="?order=usepart">Используемые запасные части</a></th>
+                <th><a href="?order=datamainten">Дата проведения ТО</a></th>
+                <th><a href="?order=restoredate">Дата восстановления</a></th>
+                <th><a href="?order=downtime">Время простоя техники</a></th>
+                <th><a href="?order=serviceorg">Сервисная компания</a></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for car in cars %}
+            <tr>
+                <td>{{ car.car.carnumber }}</td>
+                <td>{{ car.car.carmodel }}</td>
+                <td>{{ car.databroke }}</td>
+                <td>{{ car.workhour }}</td>
+                <td>{{ car.failnode }}</td>
+                <td>{{ car.description }}</td>
+                <td>{{ car.recoverymethod }}</td>
+                <td>{{ car.usepart }}</td>
+                <td>{{ car.datamainten }}</td>
+                <td>{{ car.restoredate }}</td>
+                <td>{{ car.downtime }}</td>
+                <td>{{ car.serviceorg }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ {% endif %}
+    {% else %}
+        <div class="alert alert-warning">
+            <a href="{% url 'login' %}">Войдите</a>, чтобы просмотреть свои автомобили
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

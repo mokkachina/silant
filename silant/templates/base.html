@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>{{title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" href="{% static '/car/css/styles.css' %}" rel="stylesheet" />
+    <link  type="image/png" sizes="96x96" href="{% static '../images/logo96.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+
+{% block mainmenu %}
+
+
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+<tr><td valign=top>
+<div class="header">
+    <ul id="mainmenu" class="mainmenu">
+        <li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
+        <li><p>+7-8352-20-12, telegram</p> <p>Электронная сервисная книжка "Мой Силант"</p></li>
+
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <li> <a href="{% url 'admin_car' %}">{{ user.username }}</a> | <a href="{% url 'account_logout' %}"  class="btn btn-danger">Выйти</a></li>
+            {% elif user.is_service %}
+                <li>  <a href="{% url 'serv_car' %}" >{{ user.username }}</a> | <a href="{% url 'account_logout' %}"  class="btn btn-danger">Выйти</a></li>
+            {% elif user.is_client %}
+                <li>  <a href="{% url 'client_car' %}" >{{ user.username }}</a> | <a href="{% url 'account_logout' %}"  class="btn btn-danger">Выйти</a></li>
+            {% endif %}
+        {% else %}
+            <li><a href="{% url 'login' %}" class="btn btn-primary">Войти</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+{% endblock mainmenu %}
+
+<!-- Блок контента -->
+	<div class="content-text">
+{% block content %}
+        {% block account_content %}{% endblock %}
+{% endblock %}
+	</div>
+<!-- Конец блока контента -->
+<!-- Footer -->
+<tr><td valign=top>
+	<div id="footer">
+        <p>+7-8352-20-12, telegram</p>
+		<p>&copy; Мой Силант 2025 </p>
+	</div>
+</td></tr></table>
+<!-- Конец footer'а и страницы -->
+</body>
+</html>

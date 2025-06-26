@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+
+        <p>Информация о комплектации и технических характеристиках Вашей техники</p>
+
+    </div>
+
+  <div class="nav-links">
+      <a href="{% url 'admin_car' %}" class="{% if active_tab == 'cars' %}active-link{% endif %}">Машины</a>
+      <a href="{% url 'admin_mainten' %}" class="{% if active_tab == 'maintenance' %}active-link{% endif %}">ТО</a>
+      <a href="{% url 'admin_compl' %}" class="{% if active_tab == 'complaints' %}active-link{% endif %}">Рекламации</a>
+      <a href="{% url 'admin_car_create' %}" class="{% if active_tab == 'car_add' %}active-link{% endif %}">Добавить_Машину</a>
+      <a href="{% url 'admin_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить_ТО</a>
+      <a href="{% url 'admin_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
+  </div>
+<div class="filter-form">
+    <form method="get">
+        <!-- Каждое поле в отдельной строке -->
+        <div class="filter-field">
+            <label for="id_viewmainten">Вид ТО:</label>
+            {{ filter.form.viewmainten }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_carnumber">Зав. № машины:</label>
+            {{ filter.form.carnumber }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_serviceorg">Сервисная компания:</label>
+            {{ filter.form.serviceorg }}
+        </div>
+
+
+        <div class="filter-buttons">
+            <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            <a href="?" class="btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
+</div>
+
+<div>
+    {% if admain %}  {# Основная проверка наличия автомобилей #}
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?order=car">Mашина</a></th>
+                <th><a href="?order=viewmainten">Вид ТО</a></th>
+                <th><a href="?order=datamainten">Дата проведения ТО</a></th>
+                <th><a href="?order=workhour">Наработка, м/час</a></th>
+                <th><a href="?order=workordernum">№ заказ-наряда</a></th>
+                <th><a href="?order=workorderdate">Дата заказ-наряда</a></th>
+                <th><a href="?order=maintenorg">Организация, проводившая ТО</a></th>
+                <th><a href="?order=serviceorg">Сервисная компания</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in admain %}
+            <tr>
+                <td><a href="{% url 'main_edit_manager' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.car }}</td>
+                <td>{{ car.viewmainten }}</td>
+                <td>{{ car.datamainten|date:"d.m.Y" }}</td>
+                <td>{{ car.workhour }}</td>
+                <td>{{ car.workordernum }}</td>
+                <td>{{ car.workorderdate }}</td>
+                <td>{{ car.maintenorg}}</td>
+                <td>{{ car.serviceorg }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# Пагинация #}
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&order={{ request.GET.order }}">Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}&order={{ request.GET.order }}">←</a>
+        {% endif %}
+
+        <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&order={{ request.GET.order }}">→</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&order={{ request.GET.order }}">Последняя</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-warning">
+        Автомобили не найдены
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Редактирование записи Рекламация</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <button type="button" onclick="window.history.back();">Отмена</button>
+</form>
+<form action="{% url 'admin_compl_delete' object.id %}" method="post"
+      onsubmit="return confirm('Вы уверены?');" class="d-inline">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">
+        <i class="bi bi-trash"></i> Удалить
+    </button>
+</form>
+{% endblock %}

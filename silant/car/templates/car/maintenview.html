@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+
+        <p>Информация о комплектации и технических характеристиках Вашей техники</p>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{% url 'client_car' %}" class="{% if active_tab == 'cars' %}active-link{% endif %}">Машины</a>
+        <a href="{% url 'client_mainten' %}" class="{% if active_tab == 'maintenance' %}active-link{% endif %}">ТО</a>
+        <a href="{% url 'client_compl' %}" class="{% if active_tab == 'complaints' %}active-link{% endif %}">Рекламации</a>
+        <a href="{% url 'client_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить ТО</a>
+    </div>
+<div>
+    {% if user.is_authenticated %}
+        {% if cars %}
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?order=car.carnumber">Зав. № машины</a></th>
+                <th><a href="?order=car.carmodel">Модель техники </a></th>
+                <th><a href="?order=viewmainten">Вид ТО</a></th>
+                <th><a href="?order=datamainten">Дата проведения ТО</a></th>
+                <th><a href="?order=workhour">Наработка, м/час</a></th>
+                <th><a href="?order=workordernum">№ заказ-наряда</a></th>
+                <th><a href="?order=workorderdate">Дата заказ-наряда</a></th>
+                <th><a href="?order=maintenorg">Организация, проводившая ТО</a></th>
+                <th><a href="?order=serviceorg">Сервисная компания</a></th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for car in cars %}
+            <tr>
+                <td><a href="{% url 'edit_mainten' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.car.carnumber }}</a></td>
+                <td>{{ car.car.carmodel }}</td>
+                <td>{{ car.viewmainten }}</td>
+                <td>{{ car.datamainten|date:"d.m.Y" }}</td>
+                <td>{{ car.workhour }}</td>
+                <td>{{ car.workordernum }}</td>
+                <td>{{ car.workorderdate }}</td>
+                <td>{{ car.maintenorg}}</td>
+                <td>{{ car.serviceorg }}</td>
+
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="11">Нет данных для отображения</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  {% else %}
+    <p>Нет данных о техническом обслуживании</p>
+    {% endif %}
+</div>
+{% else %}
+<div class="alert alert-warning">
+    <a href="{% url 'login' %}">Войдите</a>, чтобы просмотреть информацию
+</div>
+{% endif %}
+{% endblock %}

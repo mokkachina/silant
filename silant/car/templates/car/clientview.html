@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+
+        <p>Информация о комплектации и технических характеристиках Вашей техники</p>
+    </div>
+
+  <div class="nav-links">
+    <a href="{% url 'client_car' %}" class="{% if active_tab == 'cars' %}active-link{% endif %}">Машины</a>
+    <a href="{% url 'client_mainten' %}" class="{% if active_tab == 'maintenance' %}active-link{% endif %}">ТО</a>
+    <a href="{% url 'client_compl' %}" class="{% if active_tab == 'complaints' %}active-link{% endif %}">Рекламации</a>
+      <a href="{% url 'client_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить ТО</a>
+  </div>
+
+
+<div>
+    {% if user.is_authenticated %}
+        {% if cars %}
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?order=carnumber">Зав. № машины</a></th>
+                <th><a href="?order=carmodel">Модель техники</a></th>
+                <th><a href="?order=enginemodel">Модель двигателя</a></th>
+                <th><a href="?order=enginenumber">Зав. № двигателя</a></th>
+                <th><a href="?order=transnember">Зав. № трансмиссии</a></th>
+                <th><a href="?order=axdrivemodel">Модель ведущего моста</a></th>
+                <th><a href="?order=axdrivenumber">Зав. № ведущего моста</a></th>
+                <th><a href="?order=axcontrolmodel">Модель управляемого моста</a></th>
+                <th><a href="?order=axcontrolnumber">Зав. № управляемого моста</a></th>
+                <th><a href="?order=dataconractsupply">Договор поставки №, дата</a></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for car in cars %}
+            <tr>
+                <td>{{ car.carnumber }}</td>
+                <td>{{ car.carmodel }}</td>
+                <td>{{ car.enginemodel }}</td>
+                <td>{{ car.enginenumber }}</td>
+                <td>{{ car.transnember }}</td>
+                <td>{{ car.axdrivemodel }}</td>
+                <td>{{ car.axdrivenumber }}</td>
+                <td>{{ car.axcontrolmodel }}</td>
+                <td>{{ car.axcontrolnumber }}</td>
+                <td>{{ car.dataconractsupply }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ {% endif %}
+    {% else %}
+        <div class="alert alert-warning">
+            <a href="{% url 'login' %}">Войдите</a>, чтобы просмотреть свои автомобили
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

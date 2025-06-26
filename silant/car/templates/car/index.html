@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Проверьте комплектацию и технические характеристики Силант</h1>
+    <div>
+        <form method="get" action="{% url 'home' %}">
+            <input type="text"
+               name="carnumber"
+               placeholder="Заводской номер:"
+               value="{{ request.GET.carnumber }}">
+            <button type="submit">Поиск</button>
+    </form>
+    </div>
+    <h2>Результат поиска:</h2>
+    <div>
+        <p>Информация о комплектации и технических характеристиках Вашей техники</p>
+    </div>
+<div>
+{% if search_performed %}
+    {% if homepage %}
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?order=carnumber">Зав. № машины</a></th>
+                <th><a href="?order=carmodel">Модель техники</a></th>
+                <th><a href="?order=enginemodel">Модель двигателя</a></th>
+                <th><a href="?order=enginenumber">Зав. № двигателя</a></th>
+                <th><a href="?order=transnember">Зав. № трансмиссии</a></th>
+                <th><a href="?order=axdrivemodel">Модель ведущего моста</a></th>
+                <th><a href="?order=axdrivenumber">Зав. № ведущего моста</a></th>
+                <th><a href="?order=axcontrolmodel">Модель управляемого моста</a></th>
+                <th><a href="?order=axcontrolnumber">Зав. № управляемого моста</a></th>
+                <th><a href="?order=dataconractsupply">Договор поставки №, дата</a></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for car in homepage %}
+            <tr>
+                <td>{{ car.carnumber }}</td>
+                <td>{{ car.carmodel }}</td>
+                <td>{{ car.enginemodel }}</td>
+                <td>{{ car.enginenumber }}</td>
+                <td>{{ car.transnember }}</td>
+                <td>{{ car.axdrivemodel }}</td>
+                <td>{{ car.axdrivenumber }}</td>
+                <td>{{ car.axcontrolmodel }}</td>
+                <td>{{ car.axcontrolnumber }}</td>
+                <td>{{ car.dataconractsupply }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% elif request.GET.carnumber %}
+        <div class="no-results">
+            Автомобиль с номером "{{ request.GET.carnumber }}" не найден
+        </div>
+    {% endif %}
+{% endif %}
+</div>
+
+
+{% endblock %}
+
+

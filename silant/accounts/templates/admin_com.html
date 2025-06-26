@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+
+        <p>Информация о комплектации и технических характеристиках Вашей техники</p>
+
+    </div>
+
+  <div class="nav-links">
+      <a href="{% url 'admin_car' %}" class="{% if active_tab == 'cars' %}active-link{% endif %}">Машины</a>
+      <a href="{% url 'admin_mainten' %}" class="{% if active_tab == 'maintenance' %}active-link{% endif %}">ТО</a>
+      <a href="{% url 'admin_compl' %}" class="{% if active_tab == 'complaints' %}active-link{% endif %}">Рекламации</a>
+      <a href="{% url 'admin_car_create' %}" class="{% if active_tab == 'car_add' %}active-link{% endif %}">Добавить_Машину</a>
+      <a href="{% url 'admin_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить_ТО</a>
+      <a href="{% url 'admin_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
+  </div>
+<div class="filter-form">
+    <form method="get">
+        <!-- Каждое поле в отдельной строке -->
+        <div class="filter-field">
+            <label for="id_failnode">Узел отказа:</label>
+            {{ filter.form.failnode }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_recoverymethod">Способ восстановления:</label>
+            {{ filter.form.recoverymethod }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_serviceorg">Сервисная компания:</label>
+            {{ filter.form.serviceorg }}
+        </div>
+
+
+        <div class="filter-buttons">
+            <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            <a href="?" class="btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
+</div>
+<div>
+    {% if adcom %}
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?order=carnumber">Зав. № машины</a></th>
+                <th><a href="?order=carmodel">Модель техники</a></th>
+                <th><a href="?order=databroke">Дата отказа</a></th>
+                <th><a href="?order=workhour">Наработка, м/час</a></th>
+                <th><a href="?order=failnode">Узел отказа</a></th>
+                <th><a href="?order=description">Описание отказа</a></th>
+                <th><a href="?order=recoverymethod">Способ восстановления</a></th>
+                <th><a href="?order=usepart">Используемые запасные части</a></th>
+                <th><a href="?order=datamainten">Дата проведения ТО</a></th>
+                <th><a href="?order=restoredate">Дата восстановления</a></th>
+                <th><a href="?order=downtime">Время простоя техники</a></th>
+                <th><a href="?order=serviceorg">Сервисная компания</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in adcom %}
+            <tr>
+                <td><a href="{% url 'com_edit_manager' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.car.carnumber }}</td>
+                <td><a href="{% url 'com_edit_manager' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.car.carmodel }}</td>
+                <td>{{ car.databroke }}</td>
+                <td>{{ car.workhour }}</td>
+                <td>{{ car.failnode }}</td>
+                <td>{{ car.description }}</td>
+                <td>{{ car.recoverymethod }}</td>
+                <td>{{ car.usepart }}</td>
+                <td>{{ car.datamainten }}</td>
+                <td>{{ car.restoredate }}</td>
+                <td>{{ car.downtime }}</td>
+                <td>{{ car.serviceorg }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# Пагинация #}
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&order={{ request.GET.order }}">Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}&order={{ request.GET.order }}">←</a>
+        {% endif %}
+
+        <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&order={{ request.GET.order }}">→</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&order={{ request.GET.order }}">Последняя</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-warning">
+        Автомобили не найдены
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
