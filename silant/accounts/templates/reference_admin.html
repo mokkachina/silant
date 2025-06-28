@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="reference-container">
+    <h1>Справочники</h1>
+    
+    {% for title, items in reference_models.items %}
+    <div class="reference-section">
+        <h2>{{ title }}</h2>
+        <a href="{% url 'add_reference_item' model_name=title %}" class="btn-outline-secondary">Добавить</a>
+        <a href="{% url 'admin_car' %}" class="btn-outline-secondary">Вернуться</a>
+        <table class="reference-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>
+                        <a href="{% url 'edit_reference_item' model_name=title item_id=item.id %}" class="btn-outline-secondary">Редактировать</a>
+                        <a href="{% url 'delete_reference_item' model_name=title item_id=item.id %}" class="btn-outline-secondary">Удалить</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">Нет данных</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

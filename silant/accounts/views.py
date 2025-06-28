@@ -1,17 +1,16 @@
 from allauth.account.views import logout
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.http import HttpResponseRedirect, Http404
+
 from django.contrib.auth.views import LoginView
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django_filters.views import FilterView
-
+from django.shortcuts import render, redirect, get_object_or_404
 from car.filters import CarFilter, MaintenanceFilter, ComplaintsFilter
-from car.models import Car
-from maintenance.models import Maintenance, Complaints
+from car.models import Car, Carmodel, Enginemodel, Transmodel, Axdrivemodel, Axcontrolmodel, Serviceorg
+from maintenance.models import Maintenance, Complaints, Maintenview, Failnode, Recoverymethod
 from .forms import RoleAuthForm, CarForm, MaintenanceForm, ComplaintsForm, MaintenanceCreateForm, \
     AdminComplaintsCreateForm, AdminCarAddForm
 from .mixins import ManagerRequiredMixin
@@ -239,3 +238,128 @@ class AdminComplDeleteView(LoginRequiredMixin, DeleteView):
                 (request.user.is_client and obj.car.user == request.user)):
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
+
+ # Справочник
+REFERENCE_MODELS = {
+    'Виды ТО': Maintenview,
+    'Узлы отказа': Failnode,
+    'Способы восстановления': Recoverymethod,
+    'Модели техники': Carmodel,
+    'Модели двигателя': Enginemodel,
+    'Модели трансмиссии': Transmodel,
+    'Модели ведущего моста': Axdrivemodel,
+    'Модели управляемого моста': Axcontrolmodel,
+    'Сервисные компании': Serviceorg,
+}
+def get_model_class(model_name):
+    """Получает класс модели по ее названию"""
+    return REFERENCE_MODELS.get(model_name)
+
+def admin_reference(request):
+    # Получаем все справочники
+    reference_models = {
+        'Виды ТО': Maintenview.objects.all(),
+        'Узлы отказа': Failnode.objects.all(),
+        'Способы восстановления': Recoverymethod.objects.all(),
+        'Модели техники': Carmodel.objects.all(),
+        'Модели двигателя': Enginemodel.objects.all(),
+        'Модели трансмиссии': Transmodel.objects.all(),
+        'Модели ведущего моста': Axdrivemodel.objects.all(),
+        'Модели управляемого моста': Axcontrolmodel.objects.all(),
+        'Сервисные компании': Serviceorg.objects.all(),
+    }
+
+    return render(request, 'reference_admin.html', {
+        'reference_models': reference_models,
+        'active_tab': 'reference'  # для подсветки активной вкладки
+    })
+
+
+def add_reference_item(request, model_name):
+    Model = get_model_class(model_name)
+    if not Model:
+        raise Http404("Справочник не найден")
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        Model.objects.create(name=name, description=description)
+        return redirect('admin_reference')
+
+    return render(request, 'reference_add_item.html', {
+        'model_name': model_name,
+        'active_tab': 'reference'
+    })
+
+def edit_reference_item(request, model_name, item_id):
+    Model = get_model_class(model_name)
+    if not Model:
+        raise Http404("Справочник не найден")
+
+    item = get_object_or_404(Model, id=item_id)
+
+    if request.method == 'POST':
+        item.name = request.POST.get('name')
+        item.description = request.POST.get('description')
+        item.save()
+        return redirect('admin_reference')
+
+    return render(request, 'reference_edit_item.html', {
+        'model_name': model_name,
+        'item': item,
+        'active_tab': 'reference'
+    })
+
+def delete_reference_item(request, model_name, item_id):
+    Model = get_model_class(model_name)
+    if not Model:
+        raise Http404("Справочник не найден")
+
+    item = get_object_or_404(Model, id=item_id)
+
+    if request.method == 'POST':
+        item.delete()
+        return redirect('admin_reference')
+
+    return render(request, 'reference_confirm_delete.html', {
+        'model_name': model_name,
+        'item': item,
+        'active_tab': 'reference'
+    })
+# Просмотр описания по ссылке
+class RecoveryMethodDetailView(DetailView):
+    model = Recoverymethod
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class FailnodeDetailView(DetailView):
+    model = Failnode
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class ServiceorgDetailView(DetailView):
+    model = Serviceorg
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class MaintenviewDetailView(DetailView):
+    model = Maintenview
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class CarmodelDetailView(DetailView):
+    model = Carmodel
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class EnginemodelDetailView(DetailView):
+    model = Enginemodel
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class TransmodelDetailView(DetailView):
+    model = Transmodel
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class AxdrivemodelDetailView(DetailView):
+    model = Axdrivemodel
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'
+class AxcontrolmodelDetailView(DetailView):
+    model = Axcontrolmodel
+    template_name = 'view_detail.html'  # Шаблон для отображения description
+    context_object_name = 'method'

@@ -14,6 +14,7 @@
       <a href="{% url 'admin_car_create' %}" class="{% if active_tab == 'car_add' %}active-link{% endif %}">Добавить_Машину</a>
       <a href="{% url 'admin_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить_ТО</a>
       <a href="{% url 'admin_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
+      <a href="{% url 'admin_reference' %}" class="{% if active_tab == 'reference' %}active-link{% endif %}">Справочники</a>
   </div>
 <div class="filter-form">
     <form method="get">
@@ -60,27 +61,81 @@
                 <th><a href="?order=carmodel">Модель техники</a></th>
                 <th><a href="?order=enginemodel">Модель двигателя</a></th>
                 <th><a href="?order=enginenumber">Зав. № двигателя</a></th>
+                <th><a href="?order=transmodel">Модель трансмиссии</a></th>
                 <th><a href="?order=transnember">Зав. № трансмиссии</a></th>
                 <th><a href="?order=axdrivemodel">Модель ведущего моста</a></th>
                 <th><a href="?order=axdrivenumber">Зав. № ведущего моста</a></th>
                 <th><a href="?order=axcontrolmodel">Модель управляемого моста</a></th>
                 <th><a href="?order=axcontrolnumber">Зав. № управляемого моста</a></th>
                 <th><a href="?order=dataconractsupply">Договор поставки №, дата</a></th>
+                <th><a href="?order=datashipfactory">Дата отгрузки с завода</a></th>
+                <th><a href="?order=consignee">Грузополучатель</a></th>
+                <th><a href="?order=deliveryadd">Адрес поставки</a></th>
+                <th><a href="?order=equipment">Комплектация (доп. опции)</a></th>
+                <th><a href="?order=user">Клиент</a></th>
+                <th><a href="?order=servicecompany">Сервисная компания</a></th>
             </tr>
         </thead>
         <tbody>
            {% for car in filter.qs %}  {# Изменяем adcars на filter.qs #}
             <tr>
-                <td><a href="{% url 'car_edit_manager' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.carnumber }}</a></td>
-                <td>{{ car.carmodel }}</td>
-                <td>{{ car.enginemodel }}</td>
+                <td><a href="{% url 'car_edit_manager' pk=car.pk %}" style="color: #163E6C; text-decoration: underline;">{{ car.carnumber }}</a></td>
+                <td>{% if car.carmodel %}
+                    <a href="{% url 'view_carmodel' pk=car.carmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.carmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
+                <td>{% if car.enginemodel %}
+                    <a href="{% url 'view_enginemodel' pk=car.enginemodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.enginemodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.enginenumber }}</td>
+                <td>{% if car.transmodel %}
+                    <a href="{% url 'view_transmodel' pk=car.transmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.transmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.transnember }}</td>
-                <td>{{ car.axdrivemodel }}</td>
+                <td>{% if car.axdrivemodel %}
+                    <a href="{% url 'view_axdrivemodel' pk=car.axdrivemodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.axdrivemodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.axdrivenumber }}</td>
-                <td>{{ car.axcontrolmodel }}</td>
+                <td>{% if car.axcontrolmodel %}
+                    <a href="{% url 'view_axcontrolmodel' pk=car.axcontrolmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.axcontrolmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.axcontrolnumber }}</td>
                 <td>{{ car.dataconractsupply }}</td>
+                <td>{{ car.datashipfactory }}</td>
+                <td>{{ car.consignee }}</td>
+                <td>{{ car.deliveryadd }}</td>
+                <td>{{ car.equipment }}</td>
+                <td>{{ car.user }}</td>
+                <td>{{ car.servicecompany }}</td>
             </tr>
             {% endfor %}
         </tbody>

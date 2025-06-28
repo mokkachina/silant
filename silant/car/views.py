@@ -148,3 +148,4 @@ class ClientMaintenDeleteView(LoginRequiredMixin, DeleteView):
                 (request.user.is_client and obj.car.user == request.user)):
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
+
