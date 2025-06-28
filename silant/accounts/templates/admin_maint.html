@@ -60,7 +60,7 @@
         <tbody>
             {% for car in admain %}
             <tr>
-                <td><a href="{% url 'main_edit_manager' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.car }}</td>
+                <td><a href="{% url 'main_edit_manager' pk=car.pk %}" style="color: #163E6C; text-decoration: underline;">{{ car.car }}</td>
                 <td>{% if car.viewmainten %}
                     <a href="{% url 'view_maintenview' pk=car.viewmainten.pk %}"
                     style="color: #163E6C; text-decoration: underline;"

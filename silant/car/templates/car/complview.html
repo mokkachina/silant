@@ -11,7 +11,31 @@
         <a href="{% url 'client_compl' %}" class="{% if active_tab == 'complaints' %}active-link{% endif %}">Рекламации</a>
         <a href="{% url 'client_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить ТО</a>
     </div>
+<div class="filter-form">
+    <form method="get">
+        <!-- Каждое поле в отдельной строке -->
+        <div class="filter-field">
+            <label for="id_failnode">Узел отказа:</label>
+            {{ filter.form.failnode }}
+        </div>
 
+        <div class="filter-field">
+            <label for="id_recoverymethod">Способ восстановления:</label>
+            {{ filter.form.recoverymethod }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_serviceorg">Сервисная компания:</label>
+            {{ filter.form.serviceorg }}
+        </div>
+
+
+        <div class="filter-buttons">
+            <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            <a href="?" class="btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
+</div>
 <div>
     {% if user.is_authenticated %}
         {% if cars %}
@@ -37,17 +61,49 @@
         {% for car in cars %}
             <tr>
                 <td>{{ car.car.carnumber }}</td>
-                <td>{{ car.car.carmodel }}</td>
+                <td>{% if car.car.carmodel %}
+                    <a href="{% url 'view_carmodel' pk=car.car.carmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.car.carmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.databroke }}</td>
                 <td>{{ car.workhour }}</td>
-                <td>{{ car.failnode }}</td>
+                <td>{% if car.failnode %}
+                    <a href="{% url 'view_failnode' pk=car.failnode.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                    title="Показать описание">
+                    {{ car.failnode.name }}
+                    </a>
+                    {% else %}
+                    —
+                    {% endif %}</td>
                 <td>{{ car.description }}</td>
-                <td>{{ car.recoverymethod }}</td>
+                <td>{% if car.recoverymethod %}
+                    <a href="{% url 'view_recoverymethod' pk=car.recoverymethod.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.recoverymethod.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.usepart }}</td>
                 <td>{{ car.datamainten }}</td>
                 <td>{{ car.restoredate }}</td>
                 <td>{{ car.downtime }}</td>
-                <td>{{ car.serviceorg }}</td>
+                <td>{% if car.serviceorg %}
+                    <a href="{% url 'view_serviceorg' pk=car.serviceorg.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.serviceorg.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
             </tr>
             {% endfor %}
         </tbody>

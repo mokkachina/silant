@@ -55,7 +55,7 @@ class MaintenanceFilter(django_filters.FilterSet):
     carnumber = django_filters.CharFilter(
         field_name='car__carnumber',  # Связь через ForeignKey
         lookup_expr='icontains',
-        label='Зав.номер машины'
+        label='Зав. № машины'
     )
     serviceorg = django_filters.ModelChoiceFilter(
         queryset=Serviceorg.objects.all(),

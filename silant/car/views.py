@@ -6,9 +6,11 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from django.shortcuts import redirect
+from django_filters.views import FilterView
 
 from accounts.forms import MaintenanceForm, MaintenanceCreateForm
 from accounts.mixins import ClientAccessMixin
+from car.filters import MaintenanceFilter, CarFilter, ComplaintsFilter
 from car.models import Car
 from car.utils import TitleMixin
 from maintenance.models import Maintenance, Complaints
@@ -53,9 +55,10 @@ class CarSearchView(ListView):
         context['order'] = self.request.GET.get('order', '')
         return context
 
-class ClientCarListView(ClientAccessMixin, ListView):
+class ClientCarListView(ClientAccessMixin, FilterView):
     """Список машин только текущего клиента"""
     model = Car
+    filterset_class = CarFilter
     template_name = 'car/clientview.html'
     context_object_name = 'cars'
     ordering = ['-datashipfactory']
@@ -73,9 +76,10 @@ class ClientCarListView(ClientAccessMixin, ListView):
         return context
 
 
-class ClientMaintenanceListView(ClientAccessMixin, ListView):
+class ClientMaintenanceListView(ClientAccessMixin, FilterView):
     """ТО только для машин клиента"""
     model = Maintenance
+    filterset_class = MaintenanceFilter
     template_name = 'car/maintenview.html'
     context_object_name = 'cars'
     ordering = ['-datamainten']
@@ -89,9 +93,10 @@ class ClientMaintenanceListView(ClientAccessMixin, ListView):
         return context
 
 
-class ClientCompListView(ClientAccessMixin, ListView):
+class ClientCompListView(ClientAccessMixin, FilterView):
     """ТО только для машин клиента"""
     model = Complaints
+    filterset_class = ComplaintsFilter
     template_name = 'car/complview.html'
     context_object_name = 'cars'
     ordering = ['-databroke']
@@ -118,7 +123,7 @@ class MaintenanceUpdateView(UpdateView):  # Переименовано из CarU
 class ClientCarCreateView(CreateView):
     model = Maintenance
     form_class = MaintenanceCreateForm  # Используем нашу форму
-    template_name = 'car/admin_mainten_create.html'
+    template_name = 'car/mainten_create.html'
     success_url = reverse_lazy('client_mainten')
 
     def dispatch(self, request, *args, **kwargs):

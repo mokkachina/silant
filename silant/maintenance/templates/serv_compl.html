@@ -35,17 +35,41 @@
         <tbody>
             {% for car in scom %}
             <tr>
-                <td><a href="{% url 'com_edit_serv' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.car.carnumber }}</td>
+                <td><a href="{% url 'com_edit_serv' pk=car.pk %}" style="color: #163E6C; text-decoration: underline;">{{ car.car.carnumber }}</td>
                 <td>{{ car.databroke }}</td>
                 <td>{{ car.workhour }}</td>
-                <td>{{ car.failnode }}</td>
+                <td>{% if car.failnode %}
+                    <a href="{% url 'view_failnode' pk=car.failnode.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                    title="Показать описание">
+                    {{ car.failnode.name }}
+                    </a>
+                    {% else %}
+                    —
+                    {% endif %}</td>
                 <td>{{ car.description }}</td>
-                <td>{{ car.recoverymethod }}</td>
+                <td>{% if car.recoverymethod %}
+                    <a href="{% url 'view_recoverymethod' pk=car.recoverymethod.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.recoverymethod.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.usepart }}</td>
                 <td>{{ car.datamainten }}</td>
                 <td>{{ car.restoredate }}</td>
                 <td>{{ car.downtime }}</td>
-                <td>{{ car.serviceorg }}</td>
+                <td>{% if car.serviceorg %}
+                    <a href="{% url 'view_serviceorg' pk=car.serviceorg.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.serviceorg.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
             </tr>
             {% endfor %}
         </tbody>

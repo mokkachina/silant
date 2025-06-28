@@ -13,6 +13,31 @@
         <a href="{% url 'client_compl' %}" class="{% if active_tab == 'complaints' %}active-link{% endif %}">Рекламации</a>
         <a href="{% url 'client_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить ТО</a>
     </div>
+<div class="filter-form">
+    <form method="get">
+
+        <div class="filter-field">
+            <label for="id_viewmainten">Вид ТО:</label>
+            {{ filter.form.viewmainten }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_carnumber">Зав. № машины:</label>
+            {{ filter.form.carnumber }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_serviceorg">Сервисная компания:</label>
+            {{ filter.form.serviceorg }}
+        </div>
+
+
+        <div class="filter-buttons">
+            <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            <a href="?" class="btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
+</div>
 <div>
     {% if user.is_authenticated %}
         {% if cars %}
@@ -34,15 +59,47 @@
         <tbody>
         {% for car in cars %}
             <tr>
-                <td><a href="{% url 'edit_mainten' pk=car.pk %}" style="color: #00008B; text-decoration: underline;">{{ car.car.carnumber }}</a></td>
-                <td>{{ car.car.carmodel }}</td>
-                <td>{{ car.viewmainten }}</td>
+                <td><a href="{% url 'edit_mainten' pk=car.pk %}" style="color: #163E6C; text-decoration: underline;">{{ car.car.carnumber }}</a></td>
+                <td>{% if car.car.carmodel %}
+                    <a href="{% url 'view_carmodel' pk=car.car.carmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.car.carmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
+                <td>{% if car.viewmainten %}
+                    <a href="{% url 'view_maintenview' pk=car.viewmainten.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.viewmainten.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.datamainten|date:"d.m.Y" }}</td>
                 <td>{{ car.workhour }}</td>
                 <td>{{ car.workordernum }}</td>
                 <td>{{ car.workorderdate }}</td>
-                <td>{{ car.maintenorg}}</td>
-                <td>{{ car.serviceorg }}</td>
+                <td>{% if car.maintenorg %}
+                    <a href="{% url 'view_serviceorg' pk=car.maintenorg.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.maintenorg.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
+                <td>{% if car.serviceorg %}
+                    <a href="{% url 'view_serviceorg' pk=car.serviceorg.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.serviceorg.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
 
             </tr>
         {% empty %}
