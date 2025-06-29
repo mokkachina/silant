@@ -5,14 +5,17 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django_filters.views import FilterView
 
 from accounts.forms import MaintenanceForm, ComplaintsForm, ServComplaintsCreateForm, ServMaintenanceCreateForm
 from accounts.mixins import ServiceOrgAccessMixin
+from car.filters import CarFilter, MaintenanceFilter, ComplaintsFilter
 from car.models import Car
 from maintenance.models import Maintenance, Complaints
 
-class ServCarListView(ServiceOrgAccessMixin, ListView):
+class ServCarListView(ServiceOrgAccessMixin, FilterView):
     model = Car
+    filterset_class = CarFilter
     template_name = 'serv_car.html'
     context_object_name = 'scars'
     paginate_by = 5
@@ -36,8 +39,9 @@ class ServCarListView(ServiceOrgAccessMixin, ListView):
         context['active_tab'] = 'cars'
         return context
 
-class ServMaintenanceListView(ServiceOrgAccessMixin, ListView):
+class ServMaintenanceListView(ServiceOrgAccessMixin, FilterView):
     model = Maintenance
+    filterset_class = MaintenanceFilter
     template_name = 'serv_maint.html'
     context_object_name = 'smain'
     paginate_by = 5
@@ -51,8 +55,9 @@ class ServMaintenanceListView(ServiceOrgAccessMixin, ListView):
         context['active_tab'] = 'maintenance'  # Ключевое здесь!
         return context
 
-class ServCompListView(ServiceOrgAccessMixin,ListView):
+class ServCompListView(ServiceOrgAccessMixin,FilterView):
     model = Complaints
+    filterset_class = ComplaintsFilter
     template_name = 'serv_compl.html'
     context_object_name = 'scom'
     paginate_by = 5

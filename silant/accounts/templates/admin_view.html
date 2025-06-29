@@ -135,7 +135,15 @@
                 <td>{{ car.deliveryadd }}</td>
                 <td>{{ car.equipment }}</td>
                 <td>{{ car.user }}</td>
-                <td>{{ car.servicecompany }}</td>
+                <td>{% if car.servicecompany %}
+                    <a href="{% url 'view_serviceorg' pk=car.servicecompany.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.servicecompany.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
             </tr>
             {% endfor %}
         </tbody>

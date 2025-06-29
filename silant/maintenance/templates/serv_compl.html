@@ -14,6 +14,31 @@
       <a href="{% url 'serv_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить_ТО</a>
       <a href="{% url 'serv_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
   </div>
+<div class="filter-form">
+    <form method="get">
+        <!-- Каждое поле в отдельной строке -->
+        <div class="filter-field">
+            <label for="id_failnode">Узел отказа:</label>
+            {{ filter.form.failnode }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_recoverymethod">Способ восстановления:</label>
+            {{ filter.form.recoverymethod }}
+        </div>
+
+        <div class="filter-field">
+            <label for="id_serviceorg">Сервисная компания:</label>
+            {{ filter.form.serviceorg }}
+        </div>
+
+
+        <div class="filter-buttons">
+            <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            <a href="?" class="btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
+</div>
 <div>
     {% if scom %}
     <table>

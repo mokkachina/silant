@@ -13,6 +13,41 @@
     <a href="{% url 'serv_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить_ТО</a>
     <a href="{% url 'serv_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
   </div>
+<div class="filter-form">
+    <form method="get">
+
+            <div class="filter-field">
+                <label for="id_carnumber">Зав. № машины:</label>
+                {{ filter.form.carnumber }}
+            </div>
+            <div class="filter-field">
+                <label for="id_carmodel">Модель техники:</label>
+                {{ filter.form.carmodel }}
+            </div>
+            <div class="filter-field">
+                <label for="id_enginemodel">Модель двигателя:</label>
+                {{ filter.form.enginemodel }}
+            </div>
+
+            <div class="filter-field">
+                <label for="id_transmodel">Модель трансмиссии:</label>
+                {{ filter.form.transmodel }}
+            </div>
+            <div class="filter-field">
+                <label for="id_axdrivemodel">Ведущий мост:</label>
+                {{ filter.form.axdrivemodel }}
+            </div>
+            <div class="filter-field">
+                <label for="id_axcontrolmodel">Управляемый мост:</label>
+                {{ filter.form.axcontrolmodel }}
+            </div>
+
+        <div class="filter-buttons">
+            <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            <a href="?" class="btn-outline-secondary">Сбросить</a>
+        </div>
+    </form>
+</div>
 
 
 <div>
@@ -99,7 +134,15 @@
                 <td>{{ car.deliveryadd }}</td>
                 <td>{{ car.equipment }}</td>
                 <td>{{ car.user }}</td>
-                <td>{{ car.servicecompany }}</td>
+                <td>{% if car.servicecompany %}
+                    <a href="{% url 'view_serviceorg' pk=car.servicecompany.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.servicecompany.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
             </tr>
             {% endfor %}
         </tbody>
