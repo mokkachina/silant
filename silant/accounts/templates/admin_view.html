@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
+<div class="sticky-elements">
+    <div class="info">
 
         <p>Информация о комплектации и технических характеристиках Вашей техники</p>
 
@@ -16,6 +17,7 @@
       <a href="{% url 'admin_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
       <a href="{% url 'admin_reference' %}" class="{% if active_tab == 'reference' %}active-link{% endif %}">Справочники</a>
   </div>
+</div>
 <div class="filter-form">
     <form method="get">
 
@@ -51,10 +53,10 @@
         </div>
     </form>
 </div>
-
-<div>
+<div class="scrollable-content">
+<div class="table-wrapper" >
     {% if filter.qs %}  {# Изменяем adcars на filter.qs #}
-    <table>
+    <table class="responsive-table">
         <thead>
             <tr>
                 <th><a href="?order=carnumber">Зав. № машины</a></th>
@@ -79,8 +81,8 @@
         <tbody>
            {% for car in filter.qs %}  {# Изменяем adcars на filter.qs #}
             <tr>
-                <td><a href="{% url 'car_edit_manager' pk=car.pk %}" style="color: #163E6C; text-decoration: underline;">{{ car.carnumber }}</a></td>
-                <td>{% if car.carmodel %}
+                <td data-label="Зав. № машины"><a href="{% url 'car_edit_manager' pk=car.pk %}" style="color: #163E6C; text-decoration: underline;">{{ car.carnumber }}</a></td>
+                <td data-label="Модель техники">{% if car.carmodel %}
                     <a href="{% url 'view_carmodel' pk=car.carmodel.pk %}"
                     style="color: #163E6C; text-decoration: underline;"
                      title="Показать описание">
@@ -89,7 +91,7 @@
                     {% else %}
                      —
                     {% endif %}</td>
-                <td>{% if car.enginemodel %}
+                <td data-label="Модель двигателя">{% if car.enginemodel %}
                     <a href="{% url 'view_enginemodel' pk=car.enginemodel.pk %}"
                     style="color: #163E6C; text-decoration: underline;"
                      title="Показать описание">
@@ -98,8 +100,8 @@
                     {% else %}
                      —
                     {% endif %}</td>
-                <td>{{ car.enginenumber }}</td>
-                <td>{% if car.transmodel %}
+                <td data-label="Зав. № двигателя">{{ car.enginenumber }}</td>
+                <td data-label="Модель трансмиссии">{% if car.transmodel %}
                     <a href="{% url 'view_transmodel' pk=car.transmodel.pk %}"
                     style="color: #163E6C; text-decoration: underline;"
                      title="Показать описание">
@@ -108,8 +110,8 @@
                     {% else %}
                      —
                     {% endif %}</td>
-                <td>{{ car.transnember }}</td>
-                <td>{% if car.axdrivemodel %}
+                <td data-label="Зав. № трансмиссии">{{ car.transnember }}</td>
+                <td data-label="Модель ведущего моста">{% if car.axdrivemodel %}
                     <a href="{% url 'view_axdrivemodel' pk=car.axdrivemodel.pk %}"
                     style="color: #163E6C; text-decoration: underline;"
                      title="Показать описание">
@@ -118,8 +120,8 @@
                     {% else %}
                      —
                     {% endif %}</td>
-                <td>{{ car.axdrivenumber }}</td>
-                <td>{% if car.axcontrolmodel %}
+                <td data-label="Зав. № ведущего моста">{{ car.axdrivenumber }}</td>
+                <td data-label="Модель управляемого моста">{% if car.axcontrolmodel %}
                     <a href="{% url 'view_axcontrolmodel' pk=car.axcontrolmodel.pk %}"
                     style="color: #163E6C; text-decoration: underline;"
                      title="Показать описание">
@@ -128,14 +130,14 @@
                     {% else %}
                      —
                     {% endif %}</td>
-                <td>{{ car.axcontrolnumber }}</td>
-                <td>{{ car.dataconractsupply }}</td>
-                <td>{{ car.datashipfactory }}</td>
-                <td>{{ car.consignee }}</td>
-                <td>{{ car.deliveryadd }}</td>
-                <td>{{ car.equipment }}</td>
-                <td>{{ car.user }}</td>
-                <td>{% if car.servicecompany %}
+                <td data-label="Зав. № управляемого моста">{{ car.axcontrolnumber }}</td>
+                <td data-label="Договор поставки №, дата">{{ car.dataconractsupply }}</td>
+                <td data-label="Дата отгрузки с завода">{{ car.datashipfactory }}</td>
+                <td data-label="Грузополучатель">{{ car.consignee }}</td>
+                <td data-label="Адрес поставки">{{ car.deliveryadd }}</td>
+                <td data-label="Комплектация (доп. опции)">{{ car.equipment }}</td>
+                <td data-label="Клиент">{{ car.user }}</td>
+                <td data-label="Сервисная компания">{% if car.servicecompany %}
                     <a href="{% url 'view_serviceorg' pk=car.servicecompany.pk %}"
                     style="color: #163E6C; text-decoration: underline;"
                      title="Показать описание">
@@ -148,7 +150,7 @@
             {% endfor %}
         </tbody>
     </table>
-
+</div>
    {% if is_paginated %}
     <div class="pagination">
         {% if page_obj.has_previous %}
@@ -163,7 +165,7 @@
             <a href="?page={{ page_obj.paginator.num_pages }}&order={{ request.GET.order }}{% for key, value in request.GET.items %}{% if key != 'page' and key != 'order' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Последняя</a>
         {% endif %}
     </div>
- </div>
+
     {% endif %}
 
     {% else %}
@@ -172,7 +174,5 @@
     </div>
     {% endif %}
 </div>
-<style>
-
-</style>
+</div>
 {% endblock %}

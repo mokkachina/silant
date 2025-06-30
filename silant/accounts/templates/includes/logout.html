@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="custom-logout-container">
+<div class="form-container">
     <form method="post" action="{% url 'account_logout' %}" class="custom-logout-form">
         {% csrf_token %}
         <h3>Вы уверены, что хотите выйти?</h3>
         <div class="form-error">
-            <button type="submit" class="btn btn-danger logout-btn">Выйти</button>
-            <a class="form-return" href="{% url 'home' %}" class="btn btn-secondary cancel-btn">Отмена</a>
+            <button type="submit" class="btn-success">Выйти</button>
+            <a class="form-return" href="{% url 'home' %}" class="btn-cancel">Отмена</a>
         </div>
     </form>
 </div>

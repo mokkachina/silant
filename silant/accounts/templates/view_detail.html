@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="form-container">
     <h2>{{ method.name }}</h2>
     <div class="description-box">
         <p><strong>Описание:</strong></p>
         <p>{{ method.description }}</p>
     </div>
-    <a href="javascript:history.back()" class="btn-outline-secondary">Назад</a>
+    <a href="javascript:history.back()" class="btn-cancel">Назад</a>
 </div>
 {% endblock %}

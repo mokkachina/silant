@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="form-container">
+<!--<div class="container">-->
     <h1>Добавление записи в справочник "{{ model_name }}"</h1>
     
     <form method="post">
@@ -14,8 +15,8 @@
             <label for="description">Описание:</label>
             <textarea id="description" name="description" class="form-control"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-        <a href="{% url 'admin_reference' %}" class="btn btn-secondary">Отмена</a>
+        <button type="submit" class="btn-success">Сохранить</button>
+        <a href="{% url 'admin_reference' %}" class="btn-cancel">Отмена</a>
     </form>
 </div>
 {% endblock %}

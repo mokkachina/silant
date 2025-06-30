@@ -61,6 +61,7 @@ class ClientCarListView(ClientAccessMixin, FilterView):
     filterset_class = CarFilter
     template_name = 'car/clientview.html'
     context_object_name = 'cars'
+    paginate_by = 2
     ordering = ['-datashipfactory']
 
     def get_queryset(self):
@@ -82,6 +83,7 @@ class ClientMaintenanceListView(ClientAccessMixin, FilterView):
     filterset_class = MaintenanceFilter
     template_name = 'car/maintenview.html'
     context_object_name = 'cars'
+    paginate_by = 2
     ordering = ['-datamainten']
 
     def get_queryset(self):
@@ -99,6 +101,7 @@ class ClientCompListView(ClientAccessMixin, FilterView):
     filterset_class = ComplaintsFilter
     template_name = 'car/complview.html'
     context_object_name = 'cars'
+    paginate_by = 2
     ordering = ['-databroke']
 
     def get_queryset(self):

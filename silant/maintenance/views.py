@@ -18,7 +18,7 @@ class ServCarListView(ServiceOrgAccessMixin, FilterView):
     filterset_class = CarFilter
     template_name = 'serv_car.html'
     context_object_name = 'scars'
-    paginate_by = 5
+    paginate_by = 2
     ordering = ['-datashipfactory']
 
     def get_queryset(self):
@@ -44,7 +44,7 @@ class ServMaintenanceListView(ServiceOrgAccessMixin, FilterView):
     filterset_class = MaintenanceFilter
     template_name = 'serv_maint.html'
     context_object_name = 'smain'
-    paginate_by = 5
+    paginate_by = 2
     ordering = ['-datamainten']
 
     def get_queryset(self):
@@ -60,7 +60,7 @@ class ServCompListView(ServiceOrgAccessMixin,FilterView):
     filterset_class = ComplaintsFilter
     template_name = 'serv_compl.html'
     context_object_name = 'scom'
-    paginate_by = 5
+    paginate_by = 2
     ordering = ['-databroke']
 
     def get_queryset(self):

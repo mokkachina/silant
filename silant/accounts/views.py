@@ -86,6 +86,7 @@ class AdminCompListView(ManagerRequiredMixin, FilterView):
     fields = '__all__'
     template_name = 'admin_com.html'
     context_object_name = 'adcom'
+    paginate_by = 2
     ordering = ['-databroke']
 
     def get_context_data(self, **kwargs):

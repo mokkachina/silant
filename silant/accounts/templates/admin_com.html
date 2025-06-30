@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
+<div class="sticky-elements">
+    <div class="info">
 
         <p>Информация о комплектации и технических характеристиках Вашей техники</p>
 
@@ -16,6 +17,7 @@
       <a href="{% url 'admin_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
       <a href="{% url 'admin_reference' %}" class="{% if active_tab == 'reference' %}active-link{% endif %}">Справочники</a>
   </div>
+</div>
 <div class="filter-form">
     <form method="get">
         <!-- Каждое поле в отдельной строке -->
@@ -41,9 +43,10 @@
         </div>
     </form>
 </div>
-<div>
+<div class="scrollable-content">
+<div class="table-wrapper" >
     {% if adcom %}
-    <table>
+    <table  class="responsive-table">
         <thead>
             <tr>
                 <th><a href="?order=carnumber">Зав. № машины</a></th>
@@ -103,7 +106,7 @@
             {% endfor %}
         </tbody>
     </table>
-
+</div>
     {# Пагинация #}
     {% if is_paginated %}
     <div class="pagination">
@@ -127,4 +130,5 @@
     </div>
     {% endif %}
 </div>
+
 {% endblock %}

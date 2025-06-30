@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
+<div class="sticky-elements">
+    <div class="info">
 
         <p>Информация о комплектации и технических характеристиках Вашей техники</p>
     </div>
@@ -13,6 +14,7 @@
     <a href="{% url 'serv_main_create' %}" class="{% if active_tab == 'mainten_add' %}active-link{% endif %}">Добавить_ТО</a>
     <a href="{% url 'serv_compl_create' %}" class="{% if active_tab == 'compl_add' %}active-link{% endif %}">Добавить_Рекламацию</a>
   </div>
+</div>
 <div class="filter-form">
     <form method="get">
 
@@ -49,11 +51,11 @@
     </form>
 </div>
 
-
-<div>
+<div class="scrollable-content">
+<div class="table-wrapper" >
     {% if user.is_authenticated %}
         {% if scars %}
-    <table>
+    <table class="responsive-table">
         <thead>
             <tr>
                 <th><a href="?order=carnumber">Зав. № машины</a></th>
@@ -147,11 +149,30 @@
             {% endfor %}
         </tbody>
     </table>
+      {% else %}
+    <p>Нет данных о машинах</p>
+    {% endif %}
+</div>
+     {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&order={{ request.GET.order }}{% for key, value in request.GET.items %}{% if key != 'page' and key != 'order' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}&order={{ request.GET.order }}{% for key, value in request.GET.items %}{% if key != 'page' and key != 'order' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">←</a>
+        {% endif %}
+
+        <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&order={{ request.GET.order }}{% for key, value in request.GET.items %}{% if key != 'page' and key != 'order' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">→</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&order={{ request.GET.order }}{% for key, value in request.GET.items %}{% if key != 'page' and key != 'order' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Последняя</a>
+        {% endif %}
+    </div>
  {% endif %}
     {% else %}
         <div class="alert alert-warning">
             <a href="{% url 'login' %}">Войдите</a>, чтобы просмотреть свои автомобили
         </div>
     {% endif %}
+</div>
 </div>
 {% endblock %}

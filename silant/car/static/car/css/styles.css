@@ -4,14 +4,25 @@
     font-style: italic;
     font-display: swap;
 }
-.header {
-    font-family: 'PT Astra Sans';
+.header-wrapper {
+     position: sticky;
+    top: 0;
+    left: 0;
+    right: 0; /* Прижимаем к краям экрана */
+    width: 100%; /* Ширина viewport (без учета скролла) */
+    max-width: 100vw; /* Жесткое ограничение по ширине экрана */
     background: #163E6C;
+    z-index: 1000;
+    box-shadow: 0 2px 5px #EBE6D6;
+    overflow: hidden; /* Обрезаем всё, что выходит за границы */
+    margin: 0;
+    padding: 0;
+}
+.header {
     height: 120px;
-    padding: 0 10px;
+    padding: 0 20px;
     display: flex;
     align-items: center;
-    box-shadow: 0 2px 5px #EBE6D6;
 }
 .mainmenu {
     background-color: #163E6C;
@@ -53,14 +64,20 @@
 }
 
 body {
-    font-family: 'PT Astra Sans';
-	background-color: #163E6C;
-    padding: 10px;
-    box-shadow: 0 -1px 0 #EBE6D6, 0 1px 0 #EBE6D6;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'PT Astra Sans', sans-serif;
+    background-color: #163E6C;
+    color: #EBE6D6;
+
 }
+
 a {
     font-family: 'PT Astra Sans';
-	color:  #163E6C;
+	color:  #EBE6D6;
 	text-decoration: none;
 }
 body h1 {
@@ -82,85 +99,253 @@ h3 {
 }
 body, p {
     font-family: 'PT Astra Sans';
-	color: #163E6C;
+	color: #EBE6D6;
 	text-decoration: none;
 }
-.nav-links a {
+.sticky-elements {
+    position: sticky;
+    top: 120px; /* Отступ под шапку */
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100vw;
+    background: #163E6C;
+    z-index: 1000; /* Ниже шапки (1000) */
+    overflow: hidden;
+    margin: 0;
+    padding: 0 20px;
+    box-shadow: 0 2px 3px rgba(235, 230, 214, 0.3);
+}
 
-    color: #163E6C;
+.info {
+    padding: 10px 0;
+    margin-bottom: 30px; /* Увеличиваем отступ снизу */
+}
+
+.info p {
+    color: #EBE6D6;
+    margin: 0;
+    font-size: 18px;
+    text-align: center;
+}
+nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.nav-links a {
+    color: #EBE6D6;
     text-decoration: none;
-    margin-right: 15px;
-    transition: color 0.3s;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    white-space: nowrap; /* Запрет переноса текста */
 }
 
 .nav-links a:hover {
     color: #D20A11;
+    background: rgba(235, 230, 214, 0.1);
 }
-
-/* В момент нажатия */
-.nav-links a:active {
-    color: #D20A11;
-}
-
 
 .nav-links a.active-link {
     color: #D20A11;
-    font-weight: bold; /* Добавим жирность для наглядности */
-    border-bottom: 2px solid #D20A11; /* Дополнительный индикатор */
+    font-weight: bold;
+    border-bottom: 2px solid #D20A11;
+}
+@media (max-width: 768px) {
+    .sticky-elements {
+        top: 80px; /* Если шапка уменьшается */
+    }
+
+    .nav-links {
+        gap: 8px;
+        padding: 8px 0;
+    }
+
+    .nav-links a {
+        padding: 4px 8px;
+        font-size: 14px;
+    }
+}
+/* Сброс отступов и box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-table {
-     width: 100%;
-     border-collapse: collapse;
-     margin: 20px 0;
-     font-family: 'PT Astra Sans';
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Основные стили таблицы */
+.table-wrapper {
+    width: 100%;
+    overflow-y: auto; /* Вертикальный скролл (если нужно) */
+    max-height: calc(100vh - 300px); /* Высота минус шапка */
+    margin: 5;
+    padding: 5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Чтобы не растягивалась на всю ширину */
+    min-width: 100%; /* Но не уже экрана */
+    overflow-x: hidden; /* Отключаем горизонтальный скролл */
+    min-height: 100%;
+}
+.scrollable-content {
+    width: 100%;
+    height: calc(100vh - 300px); /* Подстройте это значение */
+
+    position: relative;
+    margin-top: 10px;
 }
 
-/* Стили ячеек */
-th, td {
-     padding: 12px;
-     text-align: left;
-     border: 1px solid #C4BFAE; /* Граница под цвет фона */
+.responsive-table {
+
+
+    border-collapse: collapse;
+    font-family: 'PT Astra Sans', sans-serif;
+     width: auto; /* Ширина по содержимому */
+    min-width: 100%; /* Но не уже экрана */
 }
-/* Цвета для заголовков (th) */
-th {
-     background-color: #EBE6D6; /* Бежевый фон */
-     color: #163E6C; /* Темно-синий текст */
-     font-weight: bold;
-    letter-spacing: 0.5px;
-     border-bottom: 2px solid #163E6C; /* Темно-синяя линия под заголовком */
+
+.responsive-table th,
+.responsive-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #C4BFAE;
 }
- /* Стили заголовков */
-td {
-     background-color: #F5F1E6; /* Слегка светлее, чем заголовки */
-      /* Темно-синий текст */
+
+.responsive-table th {
+    background-color: #EBE6D6;
+    color: #163E6C;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
-th a {
+
+.responsive-table td {
+    background-color: #F5F1E6;
     color: #163E6C;
 }
 
-.pagination {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-}
-.pagination a {
-       color:#D20A11;
-       padding: 8px 16px;
-       text-decoration: none;
-       border: 1px solid #ddd;
-       margin: 0 4px;
-}
-.pagination a.active {
-        background-color: #D20A11;
-        color: white;
-        border: 1px solid #4CAF50;
-}
-.pagination a:hover:not(.active) {
-        background-color: #ddd;
+/* Ссылки в таблице */
+.responsive-table a {
+    color: #163E6C;
+    text-decoration: underline;
 }
 
+.responsive-table a:hover {
+    color: #D20A11;
+}
+@media (max-width: 768px) {
+    .responsive-table {
+        min-width: 100%; /* Убираем фиксированную ширину */
+    }
+
+    /* Скрываем заголовки */
+    .responsive-table thead {
+        display: none;
+    }
+
+    /* Каждая строка — карточка */
+    .responsive-table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #C4BFAE;
+        background: #F5F1E6;
+    }
+
+    /* Ячейки как flex-элементы с подписями */
+    .responsive-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #C4BFAE;
+    }
+
+    /* Подписи через data-атрибуты */
+    .responsive-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #163E6C;
+        margin-right: 10px;
+        flex: 1;
+    }
+
+    /* Выравнивание содержимого ячеек */
+    .responsive-table td > * {
+        flex: 2;
+        text-align: right;
+    }
+
+    /* Убираем нижнюю границу у последней ячейки */
+    .responsive-table td:last-child {
+        border-bottom: none;
+    }
+}
+@media (max-width: 360px) {
+    .responsive-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .responsive-table td::before {
+        font-size: 13px;
+    }
+}
+.pagination {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #163E6C;
+    padding: 8px 16px; /* Уменьшенные отступы */
+    border-radius: 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    gap: 8px; /* Уменьшенный промежуток */
+    align-items: center;
+    white-space: nowrap;
+    font-size: 14px; /* Уменьшенный размер шрифта */
+}
+
+.pagination a,
+.pagination span {
+    color: #EBE6D6;
+    padding: 4px 8px; /* Уменьшенные отступы */
+    text-decoration: none;
+    min-width: 24px;
+    text-align: center;
+}
+
+.pagination a {
+    border: 1px solid #EBE6D6;
+    border-radius: 3px;
+    transition: all 0.2s;
+}
+
+.pagination a:hover {
+    background: #D20A11;
+    border-color: #D20A11;
+    transform: scale(1.05);
+}
+
+/* Ещё более компактная версия для мобильных */
+@media (max-width: 768px) {
+    .pagination {
+        bottom: 10px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .pagination a,
+    .pagination span {
+        padding: 3px 6px;
+        min-width: 20px;
+    }
+}
 
 
 .last, a {
@@ -219,6 +404,7 @@ div.button {
 	width: 100%;
 	min-height: 100%;
 	height: 100%;
+
 }
 
 .left-chapters {
@@ -413,8 +599,13 @@ ul.lang-list li a:hover {color: #fdc073;}
 }
 
 #footer {
+    position: fixed; /* Фиксируем позицию */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw; /* На всю ширину viewport */
     display: flex;
-    justify-content: space-between; /* Равномерное распределение */
+    justify-content: space-between; /* Распределение по краям */
     align-items: center;
     background: #163E6C;
     padding: 10px 20px;
@@ -422,21 +613,136 @@ ul.lang-list li a:hover {color: #fdc073;}
     font-size: 14px;
     font-family: 'PT Astra Sans';
     box-shadow: 0 -2px 5px #EBE6D6;
+    z-index: 800;
+    box-sizing: border-box;
 }
 
-/* Если нужно точное позиционирование (левый | центр | правый) */
+/* Левый элемент */
 #footer p:first-child {
-    margin-right: auto; /* Прижимает следующий блок к центру */
+    margin-right: auto; /* Прижимаем к левому краю */
 }
 
+/* Правый элемент */
 #footer p:last-child {
-    margin-left: auto; /* Прижимает к правому краю */
+    margin-left: auto; /* Прижимаем к правому краю */
 }
 
+/* Общие стили для текста */
 #footer p {
-    margin: 0 10px;
+    margin: 0;
     text-decoration: underline;
     color: #EBE6D6;
+    white-space: nowrap; /* Запрещаем перенос текста */
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    #footer {
+        flex-direction: column;
+        padding: 8px 10px;
+    }
+
+    #footer p {
+        margin: 3px 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    #footer p:first-child,
+    #footer p:last-child {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+/* Контейнер формы */
+.form-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #EBE6D6;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Заголовок */
+.form-container h2 {
+    color: #D20A11;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* Стили для form.as_p - горизонтальное расположение */
+.form-container form p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Подписи полей */
+.form-container label {
+    flex: 0 0 200px; /* Фиксированная ширина для подписей */
+    margin-right: 15px;
+    font-weight: bold;
+    color: #163E6C;
+    font-family: 'PT Astra Sans', sans-serif;
+}
+
+/* Поля ввода */
+.form-container input,
+.form-container select,
+.form-container textarea {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #C4BFAE;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'PT Astra Sans', sans-serif;
+    min-width: 200px;
+}
+
+/* Кнопки */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 10px 25px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    font-family: 'PT Astra Sans', sans-serif;
+    min-width: 120px;
+    border: none;
+}
+
+/* Основная кнопка "Сохранить" */
+.btn-success {
+    background: #163E6C; /* Основной синий */
+    color: #EBE6D6; /* Светлый текст */
+}
+
+.btn-success:hover {
+    background: #1a4b8c;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Кнопка "Отмена" */
+.btn-cancel {
+    background: #EBE6D6; /* Светлый фон */
+    color: #163E6C; /* Синий текст */
+    border: 1px solid #163E6C !important; /* Синяя рамка */
+}
+
+.btn-cancel:hover {
+    background: #D20A11; /* Красный при наведении */
+    color: #EBE6D6; /* Светлый текст */
+    border-color: #D20A11 !important;
 }
 
 .form-input {
@@ -448,6 +754,7 @@ ul.lang-list li a:hover {color: #fdc073;}
     display: inline-block;
     min-width: 150px;
     vertical-align: top;
+
 }
 
 .form-error ul {
@@ -479,12 +786,24 @@ ul.lang-list li a:hover {color: #fdc073;}
     color: #D20A11;
     text-decoration: underline;
 }
+.description-box p {
+    color: #163E6C;
+    font-family: 'PT Astra Sans', sans-serif;
+}
 .filter-form {
-        margin: 20px 0;
-        padding: 15px;
+
+        position: sticky;
+        top: 120px; /* Под шапкой */
+        left: 0; /* Фиксация по левому краю */
+        width: 100%; /* Ширина контейнера */
         background: #EBE6D6;
-        border-radius: 5px;
+        padding: 15px;
+        z-index: 950;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 10px;
+        overflow: hidden; /* Обрезаем лишнее *
     }
+
     .filter-row {
         display: flex;
         flex-wrap: wrap;
