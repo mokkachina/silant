@@ -9,7 +9,7 @@
                placeholder="Заводской номер:"
                value="{{ request.GET.carnumber }}">
             <button type="submit">Поиск</button>
-    </form>
+        </form>
     </div>
     <h2>Результат поиска:</h2>
     <div>
@@ -25,27 +25,68 @@
                 <th><a href="?order=carmodel">Модель техники</a></th>
                 <th><a href="?order=enginemodel">Модель двигателя</a></th>
                 <th><a href="?order=enginenumber">Зав. № двигателя</a></th>
+                <th><a href="?order=transmodel">Модель трансмиссии</a></th>
                 <th><a href="?order=transnember">Зав. № трансмиссии</a></th>
                 <th><a href="?order=axdrivemodel">Модель ведущего моста</a></th>
                 <th><a href="?order=axdrivenumber">Зав. № ведущего моста</a></th>
                 <th><a href="?order=axcontrolmodel">Модель управляемого моста</a></th>
                 <th><a href="?order=axcontrolnumber">Зав. № управляемого моста</a></th>
-                <th><a href="?order=dataconractsupply">Договор поставки №, дата</a></th>
+
             </tr>
         </thead>
         <tbody>
         {% for car in homepage %}
             <tr>
                 <td>{{ car.carnumber }}</td>
-                <td>{{ car.carmodel }}</td>
-                <td>{{ car.enginemodel }}</td>
+                <td>{% if car.carmodel %}
+                    <a href="{% url 'view_carmodel' pk=car.carmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.carmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
+                <td>{% if car.enginemodel %}
+                    <a href="{% url 'view_enginemodel' pk=car.enginemodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.enginemodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.enginenumber }}</td>
+                <td>{% if car.transmodel %}
+                    <a href="{% url 'view_transmodel' pk=car.transmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.transmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.transnember }}</td>
-                <td>{{ car.axdrivemodel }}</td>
+                <td>{% if car.axdrivemodel %}
+                    <a href="{% url 'view_axdrivemodel' pk=car.axdrivemodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.axdrivemodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.axdrivenumber }}</td>
-                <td>{{ car.axcontrolmodel }}</td>
+                <td>{% if car.axcontrolmodel %}
+                    <a href="{% url 'view_axcontrolmodel' pk=car.axcontrolmodel.pk %}"
+                    style="color: #163E6C; text-decoration: underline;"
+                     title="Показать описание">
+                     {{ car.axcontrolmodel.name }}
+                    </a>
+                    {% else %}
+                     —
+                    {% endif %}</td>
                 <td>{{ car.axcontrolnumber }}</td>
-                <td>{{ car.dataconractsupply }}</td>
             </tr>
             {% endfor %}
         </tbody>
